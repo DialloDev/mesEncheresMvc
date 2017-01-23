@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.edugroup.dpv.mesEncheresMVC.metier.Enchere;
 import com.edugroup.dpv.mesEncheresMVC.metier.SessionEnchere;
@@ -43,21 +47,41 @@ public class EnchereController {
 		return JsonPageable.fromPage(this.getEnchereRepository().findAll(pageRequest));
 	}
 	
-	@RequestMapping(value="/save", method=RequestMethod.GET, produces="application/json")
+	@RequestMapping(value="/create", method=RequestMethod.POST, produces="application/json")
 	@ResponseBody
 	public Enchere addEnchere(Enchere enchere){
-		Enchere ench = enchereRepository.findOne(enchere.getId());
-		if(ench != null){
-			return null;
-		}
 		return this.getEnchereRepository().save(enchere);
 	}
-	
-	public Enchere saveEnchere(Enchere enchere){
+	@RequestMapping(value="/update", method=RequestMethod.PUT, produces="application/json")
+	@ResponseBody
+	public Enchere updateEnchere(@RequestBody Enchere enchere){
 		Enchere ench = enchereRepository.findOne(enchere.getId());
 		if (ench == null){
 			return null;
 		}
+		else {
+			ench.setNouveauMontant(enchere.getNouveauMontant());
+			ench.setDateEnchere(enchere.getDateEnchere());
+		}
 		return ench;
 	}
+	@RequestMapping(value="/delete/{id:[0-9]+}", method=RequestMethod.DELETE, produces="application/json")
+	@ResponseBody
+	public void deleteOne(@PathVariable("id") int id){
+		Enchere ench = enchereRepository.findOne(id);
+		if (ench == null){
+			throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Enchere non trouve");
+		}
+		this.getEnchereRepository().delete(id); 	
+	}
+	@RequestMapping(value="/encherir", method=RequestMethod.DELETE, produces="application/json")
+	@ResponseBody
+	public Enchere encherir(@RequestBody Enchere enchere){
+		Enchere ench = this.getEnchereRepository().findOne(enchere.getId());
+		if (ench == null)
+			return null;
+		ench.setNouveauMontant(enchere.getNouveauMontant() + enchere.getNouveauMontant() * 0.05); 
+		 return ench;
+	}
+	
 }
