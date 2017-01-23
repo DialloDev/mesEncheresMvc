@@ -21,6 +21,7 @@ public class Enchere {
 	public void setSession(SessionEnchere session) {
 		this.session = session;
 	}
+	
 	@Id @GeneratedValue
 	public int getId() {
 		return id;

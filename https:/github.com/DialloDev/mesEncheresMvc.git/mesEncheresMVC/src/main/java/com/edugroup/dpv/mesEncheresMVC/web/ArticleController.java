@@ -51,14 +51,14 @@ public class ArticleController
 	public Page<Article> liste(@PageableDefault(page=0, size=10) Pageable pageRequest) {
 		return JsonPageable.fromPage(this.getArticleRepository().findAll(pageRequest));
 	}
-
+	
 	@RequestMapping(value="/{id:[0-9]+}", method=RequestMethod.DELETE, produces="application/json")
 	@ResponseBody
 	//@JsonView(TagOnly.class)
 	public void removeOne(@PathVariable("id") int id) {
 		this.getArticleRepository().delete(id);
 	}
-
+	
 	@RequestMapping(method=RequestMethod.PUT, produces="application/json")
 	@ResponseBody
 	public Article updateOne(@RequestBody Article article)
@@ -91,5 +91,4 @@ public class ArticleController
 		this.getArticleRepository().save(article);
 		return article;
 	}
-
 }
