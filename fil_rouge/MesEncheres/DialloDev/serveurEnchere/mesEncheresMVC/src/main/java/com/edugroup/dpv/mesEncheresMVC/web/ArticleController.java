@@ -45,7 +45,7 @@ public class ArticleController
 		return this.getArticleRepository().save(article);
 	}
 
-	@RequestMapping(method=RequestMethod.GET, produces="application/json")
+	@RequestMapping(value="/liste", method=RequestMethod.GET, produces="application/json")
 	@ResponseBody
 	//@JsonView(TagOnly.class)
 	public Page<Article> liste(@PageableDefault(page=0, size=10) Pageable pageRequest) {
