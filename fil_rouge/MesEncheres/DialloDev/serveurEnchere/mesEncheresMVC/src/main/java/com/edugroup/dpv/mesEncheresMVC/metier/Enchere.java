@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Enchere {
 	int id;
-	double nouveauMontant;
+	int nouveauMontant;
 	Date dateEnchere;
 	SessionEnchere session;
 	
@@ -29,10 +29,10 @@ public class Enchere {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public double getNouveauMontant() {
+	public int getNouveauMontant() {
 		return nouveauMontant;
 	}
-	public void setNouveauMontant(double nouveauMontant) {
+	public void setNouveauMontant(int nouveauMontant) {
 		this.nouveauMontant = nouveauMontant;
 	}
 	public Date getDateEnchere() {
@@ -41,7 +41,7 @@ public class Enchere {
 	public void setDateEnchere(Date dateEnchere) {
 		this.dateEnchere = dateEnchere;
 	}
-	public Enchere(int id, double nouveauMontant, Date dateEnchere) {
+	public Enchere(int id, int nouveauMontant, Date dateEnchere) {
 		super();
 		this.id = id;
 		this.nouveauMontant = nouveauMontant;

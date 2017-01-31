@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.edugroup.dpv.mesEncheresMVC.metier.Article;
 import com.edugroup.dpv.mesEncheresMVC.metier.Enchere;
 import com.edugroup.dpv.mesEncheresMVC.metier.SessionEnchere;
 import com.edugroup.dpv.mesEncheresMVC.repositories.EnchereRepository;
@@ -74,7 +75,8 @@ public class EnchereController {
 		}
 		this.getEnchereRepository().delete(id); 	
 	}
-	@RequestMapping(value="/encherir", method=RequestMethod.DELETE, produces="application/json")
+	/*
+	@RequestMapping(value="/encherir", method=RequestMethod.PUT, produces="application/json")
 	@ResponseBody
 	public Enchere encherir(@RequestBody Enchere enchere){
 		Enchere ench = this.getEnchereRepository().findOne(enchere.getId());
@@ -82,6 +84,27 @@ public class EnchereController {
 			return null;
 		ench.setNouveauMontant(enchere.getNouveauMontant() + enchere.getNouveauMontant() * 0.05); 
 		 return ench;
+	}*/
+	
+	@RequestMapping(value="/encherir", method=RequestMethod.PUT, produces="application/json")
+	@ResponseBody
+	public Enchere encherire(@RequestBody Enchere enchere){
+		Enchere ench = enchereRepository.findOne(enchere.getId());
+		if (ench != null){
+			Article a = ench.getSession().getArticle();
+			if (a != null){
+				if (a.getEnchereMinimum() < ench.getNouveauMontant()){
+					a.setEnchereMinimum(ench.getNouveauMontant());
+				}
+				else {
+					throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "le nouveau montant doit être > à l'enchere min");
+				}
+			}
+			else{
+				throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Article non trouve");
+			}
+		}
+		return ench;
 	}
 	
 }
