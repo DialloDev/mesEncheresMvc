@@ -53,7 +53,10 @@
 		class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 </bean>
-
+<bean id="fileStorageManager"
+	  class="com.edugroup.dpv.mesEncheresMVC.utils.FileStorageManager">
+	  <property name="storageRoot" value="${filestorage.directory}" />
+</bean>
 <tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

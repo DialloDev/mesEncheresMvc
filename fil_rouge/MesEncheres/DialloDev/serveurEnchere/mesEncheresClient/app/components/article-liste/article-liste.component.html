@@ -1,0 +1,21 @@
+<div class="container">
+  <h2>Liste des Articles disponibles</h2>
+    <div *ngIf="articles" class="row">
+        <div *ngFor="let article of articles | async" class="col-md-4">
+            <div class="panel-group">
+                <div class="panel panel-primary">
+                        <div class="panel-heading"> 
+                             <h5>{{article.nom}}</h5>
+                        </div>
+                        <div class="panel-body">
+                            <p> <img src="{{article.disponible}}" style="height:80px"/></p>
+                            <p> {{article.miseDepart}} </p>
+                            <p> {{article.enchereMinimum}} </p>
+                        </div>
+                        <a routerLink="/edit/{{article.id}}"
+                         class="btn btn-primary btn-sm">editer</a>
+                </div>
+             </div>
+        </div>
+    </div>
+</div>

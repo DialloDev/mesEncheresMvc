@@ -1,9 +1,12 @@
 package com.edugroup.dpv.mesEncheresMVC.metier;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -15,8 +18,15 @@ public class Article {
 	int enchereMinimum;
 	UtilisateurBasic proprietaire;
 	SessionEnchere session;
+	Set<Image> images;
 	
-	
+	@OneToMany(mappedBy="article")
+	public Set<Image> getImages() {
+		return images;
+	}
+	public void setImages(Set<Image> images) {
+		this.images = images;
+	}
 	@OneToOne(mappedBy="article")
 	public SessionEnchere getSession() {
 		return session;
